@@ -1,0 +1,389 @@
+@use "./variables.scss" as *;
+
+/* ============================================
+   内容页排版增强 - Content Page Prose
+   适用于所有详情页（概念/定理/对比/笔记）
+   ============================================ */
+
+/* ---- 文章容器优化 ---- */
+article {
+  /* 更舒适的阅读宽度 */
+  max-width: 780px;
+
+  /* 标题层级视觉系统 */
+  & h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-top: 2.25rem !important;
+    margin-bottom: 0.85rem !important;
+    padding-bottom: 0.45rem;
+    border-bottom: 2px solid var(--lightgray);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+
+    /* 装饰性编号 */
+    &::before {
+      counter-increment: h2-counter;
+      content: counter(h2-counter) ". ";
+      color: var(--tertiary);
+      font-weight: 800;
+      font-size: 0.85em;
+    }
+  }
+
+  & h3 {
+    font-size: 1.22rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-top: 1.75rem !important;
+    margin-bottom: 0.6rem !important;
+    line-height: 1.4;
+    position: relative;
+    padding-left: 1rem;
+
+    /* 左侧竖线装饰 */
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.15em;
+      bottom: 0.15em;
+      width: 3px;
+      background: var(--tertiary);
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+  }
+
+  & h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--darkgray);
+    margin-top: 1.35rem !important;
+    margin-bottom: 0.45rem !important;
+    line-height: 1.4;
+  }
+}
+
+/* h2 计数器初始化 */
+article {
+  counter-reset: h2-counter;
+}
+
+/* ---- 段落与行高优化 ---- */
+article p {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  color: var(--darkgray);
+  font-size: 0.95rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ---- 列表增强 ---- */
+article ul,
+article ol {
+  padding-left: 1.5rem;
+  margin: 0.85rem 0;
+
+  & li {
+    line-height: 1.72;
+    margin-bottom: 0.3rem;
+    color: var(--darkgray);
+    font-size: 0.93rem;
+    padding-left: 0.3rem;
+
+    &::marker {
+      color: var(--tertiary);
+      font-weight: 600;
+    }
+  }
+
+  & li > ul,
+  & li > ol {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+}
+
+article ul {
+  & li::marker {
+    content: '• ';
+    color: var(--secondary);
+  }
+
+  /* 嵌套列表不同样式 */
+  & ul li::marker {
+    content: '◦ ';
+    color: var(--tertiary);
+    opacity: 0.7;
+  }
+
+  & ul ul li::marker {
+    content: '▪ ';
+    color: var(--gray);
+  }
+}
+
+/* ---- 图片优化 ---- */
+article img {
+  border-radius: 8px;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 100%;
+  height: auto;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: scale(1.008);
+  }
+}
+
+/* 图片居中容器 */
+article p > img:only-child,
+figure {
+  display: block;
+  margin: 1.5rem auto;
+  text-align: center;
+}
+
+article figure {
+  figcaption {
+    margin-top: 0.65rem;
+    font-size: 0.83rem;
+    color: var(--gray);
+    font-style: italic;
+    text-align: center;
+  }
+}
+
+/* ---- 分隔线美化 ---- */
+article hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--lightgray) 30%, var(--lightgray) 70%, transparent);
+  margin: 2.5rem 0;
+  position: relative;
+
+  /* 中央装饰点 */
+  &::after {
+    content: '✦';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.65rem;
+    color: var(--tertiary);
+    background: var(--light);
+    padding: 0 0.5rem;
+  }
+}
+
+/* ---- 链接增强 ---- */
+article a:not(.internal):not(.tag-link):not([href^="#"]) {
+  color: var(--secondary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.18s ease;
+  position: relative;
+
+  &:hover {
+    border-bottom-color: var(--secondary);
+    color: var(--tertiary);
+  }
+
+  /* 外链图标 */
+  &[href^="http"]::after {
+    content: '↗';
+    font-size: 0.7rem;
+    margin-left: 3px;
+    opacity: 0.5;
+    vertical-align: super;
+  }
+}
+
+/* ---- 引用块嵌套层级 ---- */
+article blockquote {
+  border-left: 3px solid var(--tertiary);
+  background: linear-gradient(135deg, var(--light), rgba(var(--tertiary-rgb,132,165,157),0.03));
+  border-radius: 0 10px 10px 0;
+  padding: 0.9rem 1.15rem;
+  margin: 1.35rem 0;
+  font-style: normal;
+  position: relative;
+  overflow: hidden;
+
+  /* 左上角装饰 */
+  &::before {
+    content: '"';
+    position: absolute;
+    top: -2px;
+    left: 12px;
+    font-size: 2.5rem;
+    color: var(--tertiary);
+    opacity: 0.12;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  & p {
+    color: var(--darkgray);
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 嵌套引用 */
+  & blockquote {
+    margin: 0.6rem 0;
+    border-left-color: var(--secondary);
+
+    &::before {
+      content: '›';
+      font-size: 1.5rem;
+      top: 0;
+      left: 8px;
+    }
+  }
+}
+
+/* ---- KaTeX 数学公式增强 ---- */
+article .katex-display {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+article .katex {
+  font-size: 1.05em;
+}
+
+/* 行内公式轻微高亮 */
+article p > .katex,
+article li > .katex {
+  padding: 0 0.15em;
+  background: var(--highlight);
+  border-radius: 3px;
+}
+
+/* ---- 代码块增强 ---- */
+article pre {
+  border-radius: 8px;
+  border: 1px solid var(--lightgray);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s ease;
+}
+
+article pre:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+article pre code {
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* 行内代码增强 */
+article :not(pre) > code {
+  background: var(--color-secondary-bg-subtle);
+  color: var(--secondary);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.88em;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+article :not(pre) > code:hover {
+  border-color: var(--secondary);
+}
+
+/* ---- 表格增强 ---- */
+article .table-container > table {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--lightgray);
+  margin: 1.25rem 0;
+  padding: 0;
+}
+
+article .table-container > table th {
+  background: var(--color-secondary-bg);
+  color: var(--dark);
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--lightgray);
+}
+
+article .table-container > table td {
+  font-size: 0.9rem;
+}
+
+article .table-container > table tr:hover td {
+  background: var(--table-hover-bg);
+}
+
+article .table-container > table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---- Callout 在内容页的增强 ---- */
+article .callout {
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s ease;
+}
+
+article .callout:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+/* [!def] 定义 callout 特殊样式 - 更醒目 */
+article .callout[data-callout="def"] {
+  border-left: 3px solid var(--color, #7c3aed);
+  background: var(--bg, #7c3aed10);
+}
+
+article .callout[data-callout="def"] .callout-title {
+  font-weight: 700;
+}
+
+/* [!proof] 证明 callout - 可折叠、视觉轻量 */
+article .callout[data-callout="proof"] {
+  border-left: 3px solid var(--color, #059669);
+  background: var(--bg, #05966910);
+}
+
+/* [!problem] 题目 callout - 醒目边框 */
+article .callout[data-callout="problem"] {
+  border-left: 3px solid var(--color, #ea580c);
+  background: var(--bg, #ea580c10);
+}
+
+/* [!faq] FAQ callout - 默认可折叠 */
+article .callout[data-callout="faq"] {
+  border-left: 3px solid var(--color, #0891b2);
+  background: var(--bg, #0891b210);
+}
+
+/* ---- 标记文本（==高亮==）增强 ---- */
+article mark {
+  background: linear-gradient(120deg, var(--textHighlight) 0%, rgba(255, 242, 54, 0.3) 100%);
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+  color: inherit;
+}
+
+::root[saved-theme="dark"] article mark {
+  background: linear-gradient(120deg, rgba(179, 170, 2, 0.35) 0%, rgba(179, 170, 2, 0.15) 100%);
+}

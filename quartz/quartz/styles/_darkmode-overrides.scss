@@ -1,0 +1,121 @@
+@use "./variables.scss" as *;
+
+/* ============================================
+   暗色模式专属覆盖
+   处理 CSS 变量无法覆盖的复杂场景
+   ============================================ */
+::root[saved-theme="dark"] {
+  /* 概念页 topic 图标背景 - 增强可见度 */
+  .concept-hub .cat-foundations .cat-icon { background: rgba(59,130,246,0.2); color: #60a5fa; }
+  .concept-hub .cat-sorting .cat-icon { background: rgba(139,92,246,0.2); color: #a78bfa; }
+  .concept-hub .cat-ds .cat-icon { background: rgba(52,211,153,0.2); color: #34d399; }
+  .concept-hub .cat-dp .cat-icon { background: rgba(251,191,36,0.2); color: #fbbf24; }
+  .concept-hub .cat-graph .cat-icon { background: rgba(34,211,238,0.2); color: #22d3ee; }
+  .concept-hub .cat-string .cat-icon { background: rgba(244,114,182,0.2); color: #f472b6; }
+  .concept-hub .cat-geometry .cat-icon { background: rgba(167,139,250,0.2); color: #a78bfa; }
+  .concept-hub .cat-number .cat-icon { background: rgba(248,113,113,0.2); color: #f87171; }
+  .concept-hub .cat-probability .cat-icon { background: rgba(251,146,60,0.2); color: #fb923c; }
+  .concept-hub .cat-advanced .cat-icon { background: rgba(129,140,248,0.2); color: #818cf8; }
+  .concept-hub .cat-logic .cat-icon { background: rgba(52,211,153,0.2); color: #34d399; }
+  .concept-hub .cat-inference .cat-icon { background: rgba(251,191,36,0.2); color: #fbbf24; }
+  .concept-hub .cat-fallacy .cat-icon { background: rgba(248,113,113,0.2); color: #f87171; }
+  .concept-hub .cat-proposition .cat-icon { background: rgba(34,211,238,0.2); color: #22d3ee; }
+
+  /* 定理卡 topic 色条 - 暗色模式提亮 */
+  .theorem-list .theorem-card[data-topic="sorting"] { border-left-color: #60a5fa; }
+  .theorem-list .theorem-card[data-topic="data-structure"] { border-left-color: #a78bfa; }
+  .theorem-list .theorem-card[data-topic="np"] { border-left-color: #f87171; }
+  .theorem-list .theorem-card[data-topic="flow"] { border-left-color: #22d3ee; }
+  .theorem-list .theorem-card[data-topic="number"] { border-left-color: #a78bfa; }
+  .theorem-list .theorem-card[data-topic="set"] { border-left-color: #f472b6; }
+  .theorem-list .theorem-card[data-topic="probability"] { border-left-color: #f87171; }
+
+  /* 定理页标题渐变 - 暗色模式 */
+  .theorem-list h1 {
+    background: linear-gradient(135deg, var(--color-success), #2dd4bf);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* 对比页 VS 标签 - 暗色模式增强 */
+  .comparison-list .card-title-a {
+    color: var(--secondary);
+  }
+  .comparison-list .card-title-b {
+    color: var(--tertiary);
+  }
+
+  /* 内容页暗色模式覆盖 */
+  /* 数学公式暗色 */
+  article .katex-display {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* 代码块暗色 */
+  article :not(pre) > code {
+    background: var(--color-secondary-bg-subtle);
+    color: var(--secondary);
+  }
+
+  article :not(pre) > code:hover {
+    border-color: var(--secondary);
+  }
+
+  /* 引用块暗色 */
+  article blockquote {
+    background: rgba(255, 255, 255, 0.03);
+    border-left-color: var(--tertiary);
+  }
+
+  /* 表格暗色 */
+  article .table-container > table th {
+    background: var(--color-secondary-bg);
+  }
+
+  article .table-container > table tr:hover td {
+    background: var(--table-hover-bg);
+  }
+
+  /* Callout 暗色增强 */
+  article .callout[data-callout="def"] {
+    --color: #a78bfa;
+    --border: #a78bfa44;
+    --bg: rgba(167, 139, 250, 0.08);
+  }
+
+  article .callout[data-callout="problem"] {
+    --color: #fb923c;
+    --border: #fb923c44;
+    --bg: rgba(251, 146, 60, 0.08);
+  }
+
+  article .callout[data-callout="faq"] {
+    --color: #22d3ee;
+    --border: #22d3ee44;
+    --bg: rgba(34, 211, 238, 0.08);
+  }
+
+  article .callout[data-callout="proof"] {
+    --color: #34d399;
+    --border: #34d39944;
+    --bg: rgba(52, 211, 153, 0.08);
+  }
+
+  /* 内置 callout 暗色模式 - 增强背景可见度 */
+  .callout[data-callout] {
+    --bg: color-mix(in srgb, var(--color) 12%, transparent);
+  }
+  .callout[data-callout="note"] { --color: #64b5f6; --border: #64b5f644; --bg: rgba(100, 181, 246, 0.1); }
+  .callout[data-callout="abstract"] { --color: #4dd0e1; --border: #4dd0e144; --bg: rgba(77, 208, 225, 0.1); }
+  .callout[data-callout="info"],
+  .callout[data-callout="todo"] { --color: #4dd0e1; --border: #4dd0e144; --bg: rgba(77, 208, 225, 0.1); }
+  .callout[data-callout="tip"] { --color: #4db6ac; --border: #4db6ac44; --bg: rgba(77, 182, 172, 0.1); }
+  .callout[data-callout="success"] { --color: #4ade80; --border: #4ade8044; --bg: rgba(74, 222, 128, 0.1); }
+  .callout[data-callout="question"] { --color: #fbbf24; --border: #fbbf2444; --bg: rgba(251, 191, 36, 0.1); }
+  .callout[data-callout="warning"] { --color: #fb923c; --border: #fb923c44; --bg: rgba(251, 146, 60, 0.1); }
+  .callout[data-callout="failure"],
+  .callout[data-callout="danger"],
+  .callout[data-callout="bug"] { --color: #f87171; --border: #f8717144; --bg: rgba(248, 113, 113, 0.1); }
+  .callout[data-callout="example"] { --color: #c084fc; --border: #c084fc44; --bg: rgba(192, 132, 252, 0.1); }
+}

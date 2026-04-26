@@ -1,0 +1,73 @@
+@use "./variables.scss" as *;
+
+/* ============================================
+   CS Wiki 自定义 CSS 变量 + 断点扩展
+   支持亮色/暗色模式自动切换
+   ============================================ */
+
+/* ---- 响应式断点扩展 ---- */
+/* 与核心 variables.scss 的 $breakpoints 对齐：
+   mobile:  800px (已有 $mobile 变量)
+   desktop: 1200px (已有 $desktop 变量)
+   以下为自定义补充 */
+$bp-tablet: 900px;    // 平板竖屏（比 $mobile 宽 100px，给平板一个舒适区间）
+$bp-small: 600px;     // 手机（与原 hardcode 保持一致）
+
+/* 预格式化 media query 字符串（与 $mobile 格式一致）*/
+$tablet: "(max-width: #{$bp-tablet})";
+$small: "(max-width: #{$bp-small})";
+::root {
+  /* 状态色 */
+  --color-success: #059669;
+  --color-success-bg: rgba(5, 150, 105, 0.12);
+  --color-success-fill: #059669;
+  --color-warning: #d97706;
+  --color-warning-bg: rgba(217, 119, 6, 0.1);
+  --color-warning-bg-subtle: rgba(217, 119, 6, 0.03);
+  --color-warning-fill-a: #d97706;
+  --color-warning-fill-b: #fbbf24;
+  --color-secondary-bg: rgba(40, 75, 99, 0.08);
+  --color-secondary-bg-subtle: rgba(40, 75, 99, 0.06);
+  --color-tertiary-bg: rgba(132, 165, 157, 0.1);
+
+  /* 阴影 */
+  --shadow-xs: 0 1px 4px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.10);
+
+  /* 表格/微交互 */
+  --table-header-bg: rgba(0, 0, 0, 0.02);
+  --table-hover-bg: rgba(0, 0, 0, 0.015);
+  --progress-shimmer: rgba(255, 255, 255, 0.25);
+  --card-hover-bg: rgba(255, 255, 255, 0.8);
+}
+
+::root[saved-theme="dark"] {
+  /* 状态色 - 暗色模式增强对比度 */
+  --color-success: #34d399;
+  --color-success-bg: rgba(52, 211, 153, 0.15);
+  --color-success-fill: #34d399;
+  --color-warning: #fbbf24;
+  --color-warning-bg: rgba(251, 191, 36, 0.15);
+  --color-warning-bg-subtle: rgba(251, 191, 36, 0.06);
+  --color-warning-fill-a: #fbbf24;
+  --color-warning-fill-b: #fde68a;
+  --color-secondary-bg: rgba(123, 151, 170, 0.15);
+  --color-secondary-bg-subtle: rgba(123, 151, 170, 0.10);
+  --color-tertiary-bg: rgba(132, 165, 157, 0.15);
+
+  /* 阴影 - 暗色模式更浓 */
+  --shadow-xs: 0 1px 4px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.6);
+
+  /* 表格/微交互 */
+  --table-header-bg: rgba(255, 255, 255, 0.05);
+  --table-hover-bg: rgba(255, 255, 255, 0.03);
+  --progress-shimmer: rgba(255, 255, 255, 0.12);
+  --card-hover-bg: rgba(30, 30, 32, 0.6);
+}

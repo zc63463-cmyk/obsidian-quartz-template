@@ -1,0 +1,27 @@
+@use "./base.scss";
+
+/* ============================================
+   CS Wiki 自定义样式入口
+   所有页面样式已按功能模块拆分到独立文件
+   ============================================ */
+
+/* ---- CSS 变量扩展 ---- */
+@use "./variables-extended";
+
+/* ---- 页面专用样式（按 cssclasses 触发）---- */
+@use "./homepage";
+@use "./subject-page";
+@use "./comparison-list";
+@use "./theorem-list";
+@use "./concept-hub";
+
+/* ---- 导航组件增强 ---- */
+@use "./explorer-enhanced";
+@use "./toc-enhanced";
+@use "./page-list";
+
+/* ---- 内容排版增强 ---- */
+@use "./prose-content";
+
+/* ---- 暗色模式覆盖（需最后加载，确保优先级）---- */
+@use "./darkmode-overrides";

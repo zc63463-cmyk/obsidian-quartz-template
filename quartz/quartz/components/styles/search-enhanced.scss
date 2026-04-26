@@ -1,0 +1,90 @@
+@use "../../styles/variables.scss" as *;
+
+/* ============================================
+   搜索增强样式
+   最近搜索历史记录
+   ============================================ */
+
+.search-history {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.search-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--gray);
+  border-bottom: 1px solid var(--lightgray);
+}
+
+.search-history-clear {
+  background: none;
+  border: none;
+  color: var(--secondary);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  transition: background 0.15s ease;
+}
+
+.search-history-clear:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.search-history-list {
+  padding: 0.25rem 0;
+}
+
+.search-history-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.45rem 0.75rem;
+  background: none;
+  border: none;
+  color: var(--dark);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* 暗色模式 */
+:root[saved-theme="dark"] .search-history {
+  background: var(--dark);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+:root[saved-theme="dark"] .search-history-header {
+  color: var(--gray);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[saved-theme="dark"] .search-history-clear:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+:root[saved-theme="dark"] .search-history-item {
+  color: var(--lightgray);
+}
+
+:root[saved-theme="dark"] .search-history-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
