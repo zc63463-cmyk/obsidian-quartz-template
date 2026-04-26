@@ -1,0 +1,145 @@
+@use "../../styles/variables.scss" as *;
+
+/* ============================================
+   P1 交互体验样式
+   ③ 阅读进度条 ④ 回到顶部 ⑤ 页面过渡
+   ============================================ */
+
+/* ---- ③ 阅读进度条 ---- */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+  background: transparent;
+}
+
+.reading-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--secondary), var(--tertiary), var(--secondary));
+  background-size: 200% 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  will-change: transform;
+  transition: none; /* rAF 驱动，不用 CSS transition */
+}
+
+/* 渐变动画 - 让进度条有流动感 */
+@keyframes progress-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.reading-progress-bar {
+  animation: progress-shimmer 3s ease-in-out infinite;
+}
+
+/* 暗色模式进度条 */
+:root[saved-theme="dark"] .reading-progress-bar {
+  background: linear-gradient(90deg, #64b5f6, #4dd0e1, #64b5f6);
+  background-size: 200% 100%;
+}
+
+/* ---- ④ 回到顶部按钮 ---- */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s ease,
+              background 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px) scale(1.05);
+}
+
+.back-to-top:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.1s;
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--dark);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* 暗色模式回到顶部 */
+:root[saved-theme="dark"] .back-to-top {
+  background: rgba(30, 30, 32, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+:root[saved-theme="dark"] .back-to-top:hover {
+  background: rgba(40, 40, 44, 0.85);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+:root[saved-theme="dark"] .back-to-top svg {
+  stroke: var(--lightgray);
+}
+
+/* 移动端适配 */
+@media all and ($mobile) {
+  .back-to-top {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+}
+
+/* prefers-reduced-motion 尊重 */
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress-bar {
+    animation: none;
+  }
+
+  .back-to-top {
+    transition: opacity 0.15s ease;
+  }
+
+  .back-to-top.visible {
+    transform: none;
+  }
+}
+
+/* ---- ⑤ 页面过渡（已禁用 - 与Quartz SPA不兼容）---- */
+/* 页面过渡功能已移除：.center的全局transition会干扰micromorph DOM morphing
+   导致Mermaid未渲染、图片加载失败、布局错等问题。
+   如需页面过渡效果，应通过Quartz的prenav/nav事件在JS层实现，
+   而非CSS层对.center容器添加opacity/transform transition。 */
