@@ -558,27 +558,54 @@ styles/
 
 ### 🟡 堆叠上下文陷阱
 
-**问题**：`.search-container` 设了 `z-index: 999` 但被父元素限制。
+**问题**：`.search-container` 设了 `z-index: 999` 但被父元素限制，搜索遮罩层底部内容泄露。
 
 ```
 .sidebar.left { position: sticky; z-index: 1 }  ← 创建 stacking context
   └─ .search-container { z-index: 999 }          ← 只在 sidebar 内有效！
 ```
 
-**解决方案**：搜索打开时动态提升父级 z-index：
+**完整解决方案**（已包含在模板中，三处修复配合）：
 
+1. **search.scss** — 遮罩层样式修复：
+```scss
+& > .search-container {
+  z-index: 2147483000;           // 极高 z-index
+  background: var(--light);      // 使用主题色而非半透明黑
+  isolation: isolate;            // 创建独立 stacking context
+
+  &.active {
+    display: flex;               // 不是 inline-block！
+    flex-direction: column;
+  }
+}
+```
+
+2. **search.inline.ts** — 搜索打开时提升 sidebar z-index：
 ```typescript
-const sidebar = document.querySelector(".sidebar.left") as HTMLElement
-const searchContainer = document.querySelector(".search-container")
+function showSearch(searchTypeNew: SearchType) {
+  if (sidebar) sidebar.style.zIndex = "2147483000"  // 提升
+  container.classList.add("active")
+}
+```
+
+3. **search-enhanced.inline.ts** — MutationObserver 监听开关状态：
+```typescript
+const sidebar = document.querySelector(".sidebar.left") as HTMLElement | null
+function boostSidebarZIndex() { sidebar && (sidebar.style.zIndex = "2147483000") }
+function resetSidebarZIndex() { sidebar && (sidebar.style.zIndex = "") }
+
 const observer = new MutationObserver(() => {
   if (searchContainer?.classList.contains("active")) {
-    sidebar.style.zIndex = "99999"
+    boostSidebarZIndex()
   } else {
-    sidebar.style.zIndex = ""
+    resetSidebarZIndex()
   }
 })
-observer.observe(searchContainer, { attributes: true, attributeFilter: ["class"] })
 ```
+
+> **教训**：全屏遮罩层必须用 `block/flex` 而非 `inline-block`；backdrop-filter 不可靠，
+> 必须配合 `isolation:isolate` 或高不透明度 `background`。
 
 ### 🟡 KaTeX 居中失效
 
@@ -714,10 +741,12 @@ observer.observe(searchContainer, { attributes: true, attributeFilter: ["class"]
 | 扩展变量 | `quartz/quartz/styles/_variables-extended.scss` |
 | 核心样式 | `quartz/quartz/styles/base.scss`（⚠️ 谨慎修改） |
 | SPA 脚本 | `quartz/quartz/components/scripts/spa.inline.ts`（⚠️ 禁止修改） |
-| 搜索脚本 | `quartz/quartz/components/scripts/search.inline.ts`（叠加而非修改） |
+| 搜索脚本 | `quartz/quartz/components/scripts/search.inline.ts`（✅ 已含 z-index 修复） |
+| 搜索增强 | `quartz/quartz/components/scripts/search-enhanced.inline.ts`（✅ 已含 sidebar boost） |
+| TOC 脚本 | `quartz/quartz/components/scripts/toc.inline.ts`（✅ 已含 loop bug 修复） |
 | Cloudflare | `quartz/wrangler.toml` |
 | 国际化 | `quartz/quartz/i18n/` |
 
 ---
 
-*最后更新：2026-04-26 | 基于 CS Wiki 项目实战经验*
+*最后更新：2026-04-26 v2 | 基于 CS Wiki 项目实战经验，含搜索/TOC 完整修复*
