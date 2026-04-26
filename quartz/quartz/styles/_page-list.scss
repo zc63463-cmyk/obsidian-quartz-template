@@ -1,0 +1,238 @@
+@use "./variables.scss" as *;
+
+/* ============================================
+   PageList / 文件夹列表页视觉增强
+   用于笔记目录页、章节汇总页等 FolderPage
+   覆盖 listPage.scss 默认样式
+   ============================================ */
+
+ul.section-ul {
+  list-style: none;
+  margin-top: 1.5rem;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+li.section-li {
+  margin-bottom: 0;
+
+  & > .section {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 10px;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+
+    /* 悬停效果 */
+    &:hover {
+      border-color: var(--tertiary);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+
+      & .desc h3 a {
+        color: var(--secondary) !important;
+      }
+    }
+
+    /* 左侧装饰条 */
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--secondary), var(--tertiary));
+      border-radius: 3px 0 0 3px;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+
+  /* 文件夹项特殊样式 */
+  &:has(a[href*="/"]) > .section {
+    background: linear-gradient(135deg, var(--light), var(--color-secondary-bg-subtle));
+
+    &::before {
+      opacity: 0.7;
+      background: var(--secondary);
+    }
+
+    &:hover {
+      box-shadow: var(--shadow-md);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* ---- 日期列（meta）---- */
+.section .meta {
+  margin: 0 !important;
+  font-size: 0.78rem;
+  color: var(--gray) !important;
+  opacity: 1 !important;
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  min-width: fit-content;
+}
+
+/* ---- 标题列（desc）---- */
+.section > .desc {
+  min-width: 0;
+
+  & h3 {
+    margin: 0 !important;
+
+    & > a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dark) !important;
+      text-decoration: none !important;
+      border-bottom: none !important;
+      line-height: 1.4;
+      transition: color 0.2s ease;
+
+      /* 笔记前的图标指示 */
+      &::before {
+        content: '📄';
+        font-size: 0.8rem;
+        opacity: 0.6;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      &:hover {
+        color: var(--secondary) !important;
+
+        &::before {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+    }
+  }
+}
+
+/* 文件夹链接的标题图标 */
+li.section-li:has(a[href$="/"]) .section .desc h3 a::before {
+  content: '📁' !important;
+}
+
+/* 章节文件夹（包含"第"和"章"）特殊标记 */
+li.section-li:has(a[href*="第"]) .section .desc h3 a::before {
+  content: '📖' !important;
+}
+
+/* ---- 标签列（tags）---- */
+.section > .tags {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+  max-width: 200px;
+
+  & li {
+    margin: 0;
+    list-style: none;
+  }
+
+  & a.tag-link {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--secondary) !important;
+    background: var(--color-secondary-bg-subtle) !important;
+    border-radius: 10px;
+    text-decoration: none !important;
+    border: none !important;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: var(--color-secondary-bg) !important;
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* ---- 响应式适配 ---- */
+@media all and ($mobile) {
+  ul.section-ul {
+    gap: 8px;
+  }
+
+  li.section-li > .section {
+    grid-template-columns: 1fr !important;
+    gap: 4px 8px;
+    padding: 10px 14px;
+
+    & .meta {
+      order: 3;
+      font-size: 0.75rem;
+    }
+
+    & .tags {
+      order: 2;
+      justify-content: flex-start;
+      max-width: none;
+    }
+  }
+
+  .section .meta {
+    justify-self: start;
+  }
+}
+
+/* ---- 暗色模式 ---- */
+::root[saved-theme="dark"] {
+  li.section-li > .section {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+
+    &:hover {
+      border-color: var(--tertiary);
+      background: rgba(255,255,255,0.05);
+    }
+
+    &::before {
+      opacity: 0.5;
+    }
+  }
+
+  li.section-li:has(a[href$="/"]) > .section {
+    background: rgba(123,151,170,0.06);
+  }
+
+  .section .meta {
+    color: var(--gray) !important;
+    opacity: 0.7 !important;
+  }
+
+  .section > .tags a.tag-link {
+    background: rgba(123,151,170,0.12) !important;
+
+    &:hover {
+      background: rgba(123,151,170,0.22) !important;
+    }
+  }
+}

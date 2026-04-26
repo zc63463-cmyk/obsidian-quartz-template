@@ -47,7 +47,7 @@
 
     function boostSidebarZIndex() {
       if (sidebar) {
-        sidebar.style.zIndex = "99999"
+        sidebar.style.zIndex = "2147483000"
       }
     }
 

@@ -1,0 +1,73 @@
+@use "./variables.scss" as *;
+
+/* ============================================
+   TOC 大纲组件增强
+   - 视觉增强（缩进/标题美化）
+   - 右侧栏布局修复（flex 约束 + max-height 防溢出）
+   - 暗色模式适配
+   ============================================ */
+
+/* ---- 右侧栏 TOC 布局修复 ---- */
+/* base.scss 的右侧栏 .sidebar.right 默认 flex-direction:row，
+   导致 TOC/Graph/Backlinks 横向挤压。
+   此覆盖确保 TOC 不被压缩，且高度可控不溢出。 */
+.sidebar.right {
+  & > .toc {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: calc(100dvh - 24rem);
+    overflow: hidden;
+  }
+}
+
+/* ---- TOC 层级缩进优化 ---- */
+.toc-content.overflow,
+ul.toc-content.overflow {
+  @for $i from 0 through 6 {
+    & .depth-#{$i} {
+      padding-left: calc(0.75rem * #{$i} + 0.25rem) !important;
+    }
+  }
+
+  & .depth-0 > a {
+    font-weight: 500;
+    font-size: 0.87rem;
+  }
+
+  & .depth-1 > a {
+    font-size: 0.82rem;
+  }
+}
+
+/* ---- TOC 标题按钮美化 ---- */
+.toc-header,
+.sidebar.right > .toc > .toc-header {
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px solid var(--lightgray);
+
+  h3 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gray);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .fold {
+    opacity: 0.5;
+  }
+}
+
+/* ---- 暗色模式 TOC ---- */
+/* ⚠️ 注意：单冒号 :root 才是有效 CSS 伪类，双冒号 ::root 是无效的！ */
+:root[saved-theme="dark"] {
+  ul.toc-content.overflow > li > a {
+    color: rgba(255,255,255,0.82);
+
+    &:hover {
+      background: rgba(255,255,255,0.06);
+    }
+  }
+}

@@ -1,0 +1,252 @@
+@use "./variables.scss" as *;
+
+/* ============================================
+   Explorer 侧边栏视觉增强 - 高审美 + 高效率
+   覆盖 explorer.scss，提升文件树导航体验
+   ============================================ */
+
+/* ---- 侧边栏容器基础 ---- */
+.sidebar.left .explorer {
+  padding: 0 4px;
+}
+
+/* ---- 标题按钮：知识导航 ---- */
+.sidebar.left .explorer .desktop-explorer {
+  padding: 0.6rem 0.5rem 0.4rem;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--lightgray);
+
+  & h2 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  & .fold {
+    margin-left: 4px;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+/* ---- 文件树全局样式 ---- */
+.explorer-content {
+  margin-top: 0.35rem;
+  padding-right: 2px;
+
+  /* 移除默认滚动条美化 */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--lightgray);
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--gray);
+    }
+  }
+}
+
+/* ---- 层级连接线：更柔和优雅 ---- */
+.explorer-content .folder-outer > ul {
+  margin-left: 4px;
+  padding-left: 1rem;
+  border-left: 1.5px solid var(--lightgray);
+  border-radius: 1px;
+  transition: border-color 0.2s ease;
+}
+
+/* ---- 文件项（笔记链接）---- */
+.explorer-content ul li > a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px 3px 10px;
+  margin: 1px 0;
+  border-radius: 6px;
+  font-size: 0.865rem;
+  font-weight: 400;
+  color: var(--darkgray) !important;
+  opacity: 1 !important;
+  transition: all 0.18s ease;
+  line-height: 1.45;
+  position: relative;
+  text-decoration: none !important;
+  border-bottom: none !important;
+
+  /* 笔记前的装饰性圆点 */
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--lightgray);
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    background: var(--highlight);
+    color: var(--dark) !important;
+    transform: translateX(2px);
+
+    &::before {
+      background: var(--tertiary);
+      box-shadow: 0 0 0 2px rgba(var(--tertiary-rgb, 132,165,157), 0.15);
+    }
+  }
+
+  /* 当前激活的笔记 */
+  &.active {
+    background: var(--color-secondary-bg-subtle) !important;
+    color: var(--secondary) !important;
+    font-weight: 500;
+
+    &::before {
+      background: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(40,75,99,0.12);
+      width: 6px;
+      height: 6px;
+    }
+  }
+}
+
+/* ---- 文件夹容器 ---- */
+.folder-container {
+  padding: 2px 0;
+  margin: 1px 0;
+
+  /* 文件夹标题链接/按钮 */
+  & div > a,
+  & div > button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px 4px 4px;
+    border-radius: 7px;
+    transition: all 0.18s ease;
+    position: relative;
+    border-bottom: none !important;
+  }
+
+  & div > a {
+    text-decoration: none !important;
+
+    &:hover {
+      background: var(--highlight);
+    }
+  }
+
+  & div > button {
+    width: 100%;
+
+    &:hover {
+      background: var(--highlight);
+    }
+
+    & span.folder-title {
+      font-size: 0.88rem !important;
+      font-weight: $semiBoldWeight;
+      color: var(--dark) !important;
+      letter-spacing: 0.005em;
+    }
+  }
+}
+
+/* ---- 文件夹箭头图标 ---- */
+.folder-icon {
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 2px !important;
+  color: var(--gray) !important;
+  opacity: 0.7;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  flex-shrink: 0;
+
+  &:hover {
+    color: var(--secondary) !important;
+    opacity: 1;
+  }
+}
+
+li:has(> .folder-outer:not(.open)) > .folder-container > svg {
+  transform: rotate(-90deg);
+}
+
+/* ---- Explorer 折叠动画优化 ---- */
+.explorer-content .folder-outer {
+  transition-property: grid-template-rows, visibility;
+  transition-duration: 0.25s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- 暗色模式微调 ---- */
+::root[saved-theme="dark"] {
+  .explorer-content ul li > a {
+    color: var(--darkgray) !important;
+
+    &::before {
+      background: rgba(255,255,255,0.15);
+    }
+
+    &:hover {
+      background: rgba(255,255,255,0.06);
+
+      &::before {
+        box-shadow: 0 0 0 2px rgba(132,165,157,0.2);
+      }
+    }
+
+    &.active {
+      background: rgba(123,151,170,0.12) !important;
+
+      &::before {
+        box-shadow: 0 0 0 3px rgba(40,75,99,0.2);
+      }
+    }
+  }
+
+  .explorer-content .folder-outer > ul {
+    border-left-color: rgba(255,255,255,0.08);
+  }
+
+  .folder-container {
+    & div > a:hover,
+    & div > button:hover {
+      background: rgba(255,255,255,0.05);
+    }
+  }
+
+  .folder-icon {
+    color: rgba(255,255,255,0.35) !important;
+  }
+}
+
+/* ---- 移动端 Explorer 适配 ---- */
+@media all and ($mobile) {
+  .explorer-content ul li > a {
+    padding: 5px 12px 5px 14px;
+    font-size: 0.92rem;
+    border-radius: 8px;
+
+    &::before {
+      width: 6px;
+      height: 6px;
+    }
+  }
+
+  .folder-container div > button span.folder-title {
+    font-size: 0.95rem !important;
+  }
+}

@@ -1,0 +1,218 @@
+@use "./variables.scss" as *;
+@use "./variables-extended" as *;
+
+/* ============================================
+   定理页专用样式 - Theorem List
+   通过 cssclasses: theorem-list 触发
+   ============================================ */
+
+.theorem-list article {
+  max-width: 960px !important;
+  margin: 0 auto !important;
+  padding: 2rem 1.5rem !important;
+}
+
+.theorem-list h1 {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  background: linear-gradient(135deg, var(--color-success), #0d9488);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.25rem !important;
+}
+
+.theorem-list .page-subtitle {
+  display: block;
+  font-size: 1rem;
+  color: var(--gray);
+  margin-bottom: 1.5rem;
+}
+
+/* ---- 统计条 ---- */
+.theorem-list .theorem-stats {
+  display: flex;
+  gap: 16px;
+  padding: 1rem 1.25rem;
+  background: var(--light);
+  border-radius: 12px;
+  border: 1px solid var(--lightgray);
+  margin-bottom: 1.5rem;
+}
+
+.theorem-list .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--darkgray);
+}
+
+.theorem-list .stat-item strong {
+  color: var(--dark);
+  font-weight: 700;
+}
+
+/* ---- 分组标题 ---- */
+.theorem-list .theorem-group-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 1.75rem 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--lightgray);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theorem-list .theorem-group-title .group-icon {
+  font-size: 1.1rem;
+}
+
+.theorem-list .theorem-group-title .group-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray);
+  background: var(--lightgray);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+/* ---- 定理卡列表 ---- */
+.theorem-list .theorem-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+
+/* ---- 单张定理卡 ---- */
+.theorem-list .theorem-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0.85rem 1.1rem;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 10px;
+  border-left: 4px solid var(--secondary);
+  text-decoration: none !important;
+  color: var(--dark) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.theorem-list .theorem-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+  border-left-color: var(--color-success);
+  background: var(--card-hover-bg);
+}
+
+/* 左侧色条按主题区分 */
+.theorem-list .theorem-card[data-topic="sorting"] { border-left-color: #3b82f6; }
+.theorem-list .theorem-card[data-topic="data-structure"] { border-left-color: #8b5cf6; }
+.theorem-list .theorem-card[data-topic="graph"] { border-left-color: var(--color-success); }
+.theorem-list .theorem-card[data-topic="dp"] { border-left-color: var(--color-warning); }
+.theorem-list .theorem-card[data-topic="np"] { border-left-color: #dc2626; }
+.theorem-list .theorem-card[data-topic="flow"] { border-left-color: #0891b2; }
+.theorem-list .theorem-card[data-topic="number"] { border-left-color: #7c3aed; }
+.theorem-list .theorem-card[data-topic="set"] { border-left-color: #db2777; }
+.theorem-list .theorem-card[data-topic="logic"] { border-left-color: var(--color-success); }
+.theorem-list .theorem-card[data-topic="inference"] { border-left-color: var(--color-warning); }
+.theorem-list .theorem-card[data-topic="probability"] { border-left-color: #dc2626; }
+
+.theorem-list .thm-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-success-bg), var(--color-tertiary-bg));
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-success);
+}
+
+.theorem-list .thm-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.theorem-list .thm-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.3;
+}
+
+.theorem-list .thm-desc {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.theorem-list .thm-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.theorem-list .thm-chapter {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--secondary);
+  background: var(--color-secondary-bg-subtle);
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.theorem-list .thm-tag {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--gray);
+  white-space: nowrap;
+}
+
+/* ---- 响应式 ---- */
+@media all and (#{$tablet}) {
+  .theorem-list .theorem-card {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+  .theorem-list .thm-meta {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 4px;
+  }
+}
+
+@media all and (#{$small}) {
+  .theorem-list article {
+    padding: 1rem !important;
+  }
+  .theorem-list h1 {
+    font-size: 1.55rem !important;
+  }
+  .theorem-list .theorem-card {
+    padding: 0.75rem 0.85rem;
+  }
+  .theorem-list .thm-name {
+    font-size: 0.87rem;
+  }
+  .theorem-list .thm-desc {
+    display: none;
+  }
+  .theorem-list .theorem-stats {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}

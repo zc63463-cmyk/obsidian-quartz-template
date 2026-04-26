@@ -1,0 +1,58 @@
+@use "../../styles/variables.scss" as *;
+
+.recent-notes {
+  & > h3 {
+    margin: 0.5rem 0 0 0;
+    font-size: 1rem;
+  }
+
+  & > ul.recent-ul {
+    list-style: none;
+    margin-top: 1rem;
+    padding-left: 0;
+
+    & > li {
+      margin: 1rem 0;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: var(--bg);
+      }
+
+      .section > .desc > h3 > a {
+        background-color: transparent;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .section > .meta {
+        margin: 0 0 0.3rem 0;
+        opacity: 0.6;
+        font-size: 0.8rem;
+      }
+
+      .section > .tags {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+
+        li a {
+          font-size: 0.7rem;
+          padding: 0.1em 0.5em;
+          border-radius: 4px;
+          background: var(--highlight);
+          opacity: 0.7;
+          transition: opacity 0.15s ease;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
